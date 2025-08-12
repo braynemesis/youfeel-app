@@ -20,7 +20,11 @@ const HomePage = ({ onAnalyze, onLoading }) => {
     onLoading();
 
     try {
-      const response = await axios.post('http://localhost:3001/api/analyze', {
+      const apiUrl = import.meta.env.PROD 
+        ? '/api/analyze' 
+        : 'http://localhost:3001/api/analyze';
+        
+      const response = await axios.post(apiUrl, {
         videoUrl: videoUrl.trim()
       });
 

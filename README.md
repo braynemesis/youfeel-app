@@ -69,7 +69,7 @@ PORT=3001
 
 ### 5. Execute o projeto
 
-#### Desenvolvimento:
+#### Desenvolvimento Local:
 ```bash
 # Terminal 1 - Frontend (Vite)
 npm run dev
@@ -78,7 +78,19 @@ npm run dev
 npm run server:dev
 ```
 
-#### Produção:
+#### Deploy na Vercel (Recomendado):
+```bash
+# Deploy automático via GitHub
+git push origin main
+
+# Deploy manual
+npm run deploy
+
+# Deploy preview
+npm run deploy:preview
+```
+
+#### Produção Local:
 ```bash
 # Build do frontend
 npm run build
@@ -179,6 +191,23 @@ youfeel/
 - **Rate Limits**: Respeite os limites das APIs do Google
 - **Custos**: Google Gemini API pode ter custos associados
 - **Idioma**: Otimizado para comentários em português
+
+## 🚀 Deploy e Produção
+
+### Vercel (Recomendado)
+O YouFeel está otimizado para deploy na Vercel com:
+- ✅ **Serverless Functions** para as APIs
+- ✅ **Build automático** com Vite
+- ✅ **Deploy contínuo** via GitHub
+- ✅ **Variáveis de ambiente** seguras
+- ✅ **CDN global** para performance
+
+Ver guia completo: [VERCEL_DEPLOYMENT.md](VERCEL_DEPLOYMENT.md)
+
+### Outras Plataformas
+- **Netlify**: Funciona com Netlify Functions
+- **Railway**: Deploy completo com backend
+- **Heroku**: Deploy tradicional com server
 
 ## 🔮 Futuras Melhorias
 

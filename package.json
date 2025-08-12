@@ -14,7 +14,11 @@
     "server": "node server/index.js",
     "server:dev": "nodemon server/index.js",
     "start": "echo '🎬 YouFeel - Análise de Sentimentos para YouTube' && echo '' && echo '📋 Passos para executar:' && echo '1. Configure as APIs no arquivo .env (veja API_SETUP.md)' && echo '2. npm run dev (terminal 1 - frontend)' && echo '3. npm run server:dev (terminal 2 - backend)' && echo '4. Acesse: http://localhost:5173' && echo ''",
-    "check": "node check-setup.js"
+    "check": "node check-setup.js",
+    "vercel-build": "npm run build",
+    "deploy": "vercel --prod",
+    "deploy:preview": "vercel",
+    "setup:vercel": "node setup-vercel.js"
   },
   "dependencies": {
     "react": "^19.1.1",
@@ -43,6 +47,7 @@
     "tailwindcss": "^3.3.6",
     "autoprefixer": "^10.4.16",
     "postcss": "^8.4.32",
-    "nodemon": "^3.0.2"
+    "nodemon": "^3.0.2",
+    "vercel": "^37.6.1"
   }
 }

@@ -1,17 +1,5 @@
-import express from 'express';
-import cors from 'cors';
-import dotenv from 'dotenv';
 import { google } from 'googleapis';
 import { GoogleGenerativeAI } from '@google/generative-ai';
-
-dotenv.config();
-
-const app = express();
-const PORT = process.env.PORT || 3001;
-
-// Middleware
-app.use(cors());
-app.use(express.json());
 
 // Initialize APIs
 const youtube = google.youtube({
@@ -25,22 +13,7 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 function extractVideoId(url) {
   const regex = /(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/\s]{11})/;
   const match = url.match(regex);
-  return match ? match[1] : url; // Return the ID directly if no match (assuming it's already an ID)
-}
-
-// Helper function to list available models (for debugging)
-async function listAvailableModels() {
-  try {
-    const models = await genAI.listModels();
-    console.log('Available models:');
-    models.forEach(model => {
-      if (model.supportedGenerationMethods.includes('generateContent')) {
-        console.log(`- ${model.name}`);
-      }
-    });
-  } catch (error) {
-    console.error('Error listing models:', error.message);
-  }
+  return match ? match[1] : url;
 }
 
 // Helper function to analyze sentiment with Gemini
@@ -73,7 +46,6 @@ async function analyzeSentiment(comments) {
     const response = await result.response;
     const text = response.text();
     
-    // Try to parse JSON from the response
     const jsonMatch = text.match(/\{[\s\S]*\}/);
     if (jsonMatch) {
       return JSON.parse(jsonMatch[0]);
@@ -82,19 +54,25 @@ async function analyzeSentiment(comments) {
     throw new Error('Invalid JSON response from Gemini');
   } catch (error) {
     console.error('Error analyzing sentiment:', error);
-    
-    // Se for erro 404 do modelo, tentar listar modelos disponíveis
-    if (error.message.includes('404') || error.message.includes('not found')) {
-      console.log('Attempting to list available models...');
-      await listAvailableModels();
-    }
-    
     throw new Error(`Gemini API Error: ${error.message}`);
   }
 }
 
-// API Routes
-app.post('/api/analyze', async (req, res) => {
+export default async function handler(req, res) {
+  // CORS headers
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Authorization');
+
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
+
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
   try {
     const { videoUrl } = req.body;
     
@@ -161,40 +139,4 @@ app.post('/api/analyze', async (req, res) => {
       details: error.message 
     });
   }
-});
-
-app.get('/api/health', async (req, res) => {
-  try {
-    const health = {
-      status: 'OK',
-      timestamp: new Date().toISOString(),
-      apis: {
-        youtube: !!process.env.YOUTUBE_API_KEY,
-        gemini: !!process.env.GEMINI_API_KEY
-      }
-    };
-
-    // Testar conectividade com Gemini (opcional)
-    if (process.env.GEMINI_API_KEY) {
-      try {
-        await listAvailableModels();
-        health.apis.gemini_connection = 'OK';
-      } catch (error) {
-        health.apis.gemini_connection = 'ERROR';
-        health.apis.gemini_error = error.message;
-      }
-    }
-
-    res.json(health);
-  } catch (error) {
-    res.status(500).json({ 
-      status: 'ERROR', 
-      error: error.message,
-      timestamp: new Date().toISOString()
-    });
-  }
-});
-
-app.listen(PORT, () => {
-  console.log(`🚀 YouFeel Server running on port ${PORT}`);
-});
+}
