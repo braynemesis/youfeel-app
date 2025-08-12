@@ -28,10 +28,25 @@ function extractVideoId(url) {
   return match ? match[1] : url; // Return the ID directly if no match (assuming it's already an ID)
 }
 
+// Helper function to list available models (for debugging)
+async function listAvailableModels() {
+  try {
+    const models = await genAI.listModels();
+    console.log('Available models:');
+    models.forEach(model => {
+      if (model.supportedGenerationMethods.includes('generateContent')) {
+        console.log(`- ${model.name}`);
+      }
+    });
+  } catch (error) {
+    console.error('Error listing models:', error.message);
+  }
+}
+
 // Helper function to analyze sentiment with Gemini
 async function analyzeSentiment(comments) {
   try {
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
     
     const prompt = `
     Analise o sentimento dos seguintes comentários de YouTube e retorne um JSON com a seguinte estrutura:
@@ -67,7 +82,14 @@ async function analyzeSentiment(comments) {
     throw new Error('Invalid JSON response from Gemini');
   } catch (error) {
     console.error('Error analyzing sentiment:', error);
-    throw error;
+    
+    // Se for erro 404 do modelo, tentar listar modelos disponíveis
+    if (error.message.includes('404') || error.message.includes('not found')) {
+      console.log('Attempting to list available models...');
+      await listAvailableModels();
+    }
+    
+    throw new Error(`Gemini API Error: ${error.message}`);
   }
 }
 
@@ -141,8 +163,36 @@ app.post('/api/analyze', async (req, res) => {
   }
 });
 
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'OK', timestamp: new Date().toISOString() });
+app.get('/api/health', async (req, res) => {
+  try {
+    const health = {
+      status: 'OK',
+      timestamp: new Date().toISOString(),
+      apis: {
+        youtube: !!process.env.YOUTUBE_API_KEY,
+        gemini: !!process.env.GEMINI_API_KEY
+      }
+    };
+
+    // Testar conectividade com Gemini (opcional)
+    if (process.env.GEMINI_API_KEY) {
+      try {
+        await listAvailableModels();
+        health.apis.gemini_connection = 'OK';
+      } catch (error) {
+        health.apis.gemini_connection = 'ERROR';
+        health.apis.gemini_error = error.message;
+      }
+    }
+
+    res.json(health);
+  } catch (error) {
+    res.status(500).json({ 
+      status: 'ERROR', 
+      error: error.message,
+      timestamp: new Date().toISOString()
+    });
+  }
 });
 
 app.listen(PORT, () => {

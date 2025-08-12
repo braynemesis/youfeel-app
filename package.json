@@ -13,7 +13,8 @@
     "preview": "vite preview",
     "server": "node server/index.js",
     "server:dev": "nodemon server/index.js",
-    "start": "echo '🎬 YouFeel - Análise de Sentimentos para YouTube' && echo '' && echo '📋 Passos para executar:' && echo '1. Configure as APIs no arquivo .env (veja API_SETUP.md)' && echo '2. npm run dev (terminal 1 - frontend)' && echo '3. npm run server:dev (terminal 2 - backend)' && echo '4. Acesse: http://localhost:5173' && echo ''"
+    "start": "echo '🎬 YouFeel - Análise de Sentimentos para YouTube' && echo '' && echo '📋 Passos para executar:' && echo '1. Configure as APIs no arquivo .env (veja API_SETUP.md)' && echo '2. npm run dev (terminal 1 - frontend)' && echo '3. npm run server:dev (terminal 2 - backend)' && echo '4. Acesse: http://localhost:5173' && echo ''",
+    "check": "node check-setup.js"
   },
   "dependencies": {
     "react": "^19.1.1",
@@ -27,18 +28,18 @@
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "googleapis": "^128.0.0",
-    "@google/generative-ai": "^0.1.3"
+    "@google/generative-ai": "^0.21.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
-    "@vitejs/plugin-react": "^5.0.0",
+    "@vitejs/plugin-react": "^4.3.1",
     "eslint": "^9.33.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.3.0",
-    "vite": "^7.1.2",
+    "vite": "^6.0.1",
     "tailwindcss": "^3.3.6",
     "autoprefixer": "^10.4.16",
     "postcss": "^8.4.32",

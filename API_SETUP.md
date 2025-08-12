@@ -39,7 +39,7 @@ Este documento explica como obter e configurar as chaves de API necessárias par
 ### Passo a passo para obter a chave:
 
 1. **Acesse o Google AI Studio**
-   - Vá para: https://makersuite.google.com/app/apikey
+   - Vá para: https://aistudio.google.com/app/apikey
 
 2. **Faça login com sua conta Google**
    - Use a mesma conta do Google Cloud Console (recomendado)
@@ -53,6 +53,13 @@ Este documento explica como obter e configurar as chaves de API necessárias par
    - A chave será exibida na tela
    - **IMPORTANTE**: Copie e guarde esta chave com segurança
    - Esta chave não será mostrada novamente!
+
+### 🤖 Modelos Disponíveis:
+O YouFeel está configurado para usar o modelo `gemini-1.5-pro`, que oferece:
+- Melhor qualidade de análise de sentimentos
+- Suporte completo a `generateContent`
+- Maior capacidade de contexto
+- Respostas mais precisas em português
 
 ## 🔧 Configuração no Projeto
 

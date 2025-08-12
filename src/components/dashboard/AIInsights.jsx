@@ -1,11 +1,11 @@
 import React from 'react';
-import { FiBrain, FiMessageSquare } from 'react-icons/fi';
+import { FiCloud, FiMessageSquare } from 'react-icons/fi';
 
 const AIInsights = ({ analysis }) => {
   return (
     <div className="card">
       <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-        <FiBrain className="text-youtube-red" />
+        <FiCloud className="text-youtube-red" />
         Insights da IA
       </h3>
       
