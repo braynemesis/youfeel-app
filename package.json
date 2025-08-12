@@ -3,13 +3,17 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "description": "Análise de sentimentos e engajamento de vídeos do YouTube usando IA",
+  "author": "YouFeel Team",
+  "keywords": ["youtube", "sentiment-analysis", "ai", "react", "express", "gemini"],
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "server": "node server/index.js",
-    "server:dev": "nodemon server/index.js"
+    "server:dev": "nodemon server/index.js",
+    "start": "echo '🎬 YouFeel - Análise de Sentimentos para YouTube' && echo '' && echo '📋 Passos para executar:' && echo '1. Configure as APIs no arquivo .env (veja API_SETUP.md)' && echo '2. npm run dev (terminal 1 - frontend)' && echo '3. npm run server:dev (terminal 2 - backend)' && echo '4. Acesse: http://localhost:5173' && echo ''"
   },
   "dependencies": {
     "react": "^19.1.1",
